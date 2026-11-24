@@ -112,3 +112,12 @@ If the target follows the existing amvara9 deployment pattern, review `scripts/d
 - Keep the previous image IDs/tags available.
 - On failure: stop the stack, restore the DB dump, redeploy the previous image set, and re-run `curl /api/health` plus a browser smoke.
 - Do not use `docker compose down -v` for rollback; it deletes named volumes and all database data.
+
+## Public demo (temporary)
+
+- Repository: https://github.com/Aaditya022/Tera
+- Demo: https://donor-chart-kinds-warming.trycloudflare.com
+- Demo owner: `demo@terademo.app` / `TeraDemo-2026!` (tenant 6)
+- Demo dataset and three-minute recording sequence: `docs/tera-demo.md`
+- The quick tunnel requires this local machine and the `tera-cloudflared` container to keep running; the URL changes if they restart.
+- For public exposure, dev secrets were replaced with random values, `PRODUCTION=true` was enabled, CORS was restricted to the tunnel origin, and `/api/docs` returns 404. HAProxy health checks now use `/health`.
