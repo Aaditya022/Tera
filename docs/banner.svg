@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" role="img" aria-labelledby="title desc">
+  <title id="title">Tera</title>
+  <desc id="desc">Restaurant POS, orders, tables, and reservations</desc>
+  <rect width="720" height="180" rx="12" fill="#171717"/>
+  <path d="M50 45h90v25h-32v65H82V70H50z" fill="#FF6B35"/>
+  <text x="180" y="95" font-family="system-ui, sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">Tera</text>
+  <text x="180" y="132" font-family="system-ui, sans-serif" font-size="17" fill="#D4D4D4">Restaurant POS · Orders · Tables · Reservations</text>
+</svg>

@@ -1,0 +1,21 @@
+#!/bin/sh
+# prepare-commit-msg: remove Cursor/agent attribution from commit messages.
+# Prefer the global hooks at ~/.config/git/hooks (core.hooksPath).
+# This copy is for repos that install local hooks via install-git-hooks.sh.
+set -e
+msg_file="$1"
+[ -f "$msg_file" ] || exit 0
+tmp=$(mktemp)
+grep -v -E \
+  -e '^[[:space:]]*Co-authored-by:[[:space:]]*.*[Cc]ursor' \
+  -e '^[[:space:]]*Co-authored-by:[[:space:]]*.*cursoragent@cursor\.com' \
+  -e '^[[:space:]]*Made-with:[[:space:]]*.*[Cc]ursor' \
+  -e '^[[:space:]]*Generated-by:[[:space:]]*.*[Cc]ursor' \
+  -e '^[[:space:]]*Signed-off-by:[[:space:]]*.*[Cc]ursor' \
+  "$msg_file" > "$tmp" || true
+if [ -s "$tmp" ]; then
+  mv "$tmp" "$msg_file"
+else
+  rm -f "$tmp"
+fi
+exit 0
