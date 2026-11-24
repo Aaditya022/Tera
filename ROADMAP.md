@@ -1,6 +1,6 @@
-# Development Roadmap
+# Tera Development Roadmap
 
-High-level product status for Satisfecho POS. Prefer this file for “what’s done / what’s next”; use `docs/` for how it works and [`CHANGELOG.md`](CHANGELOG.md) for release history.
+High-level product status for Tera. Prefer this file for “what’s done / what’s next”; use `docs/` for how it works and [`CHANGELOG.md`](CHANGELOG.md) for release history. Numbered issue links below refer to the upstream project's implementation history, not issues in the Tera repository.
 
 **Umbrella tracks:** [#52](https://github.com/satisfecho/pos/issues/52)-[#54](https://github.com/satisfecho/pos/issues/54) detail lives in [`docs/0032-github-issues-roadmap.md`](docs/0032-github-issues-roadmap.md).
 
@@ -32,7 +32,7 @@ Core POS plus Jul-Oct 2026 product slices (through **2026-10-22**). Evidence: `C
 | Customer-facing counter display | Public `/display/{table_token}` live order summary (items, discounts, totals, payment labels, optional invoice email); staff opens from Orders ([#434](https://github.com/satisfecho/pos/issues/434)) - `docs/0078` |
 | Payments | Stripe; immediate-payment setting; split bill by amount + by line ([#318](https://github.com/satisfecho/pos/issues/318), [#331](https://github.com/satisfecho/pos/issues/331)) - `docs/0071` |
 | Reservations & waitlist | Staff + public book/cancel; waiting list - `docs/0011` |
-| Delivery | Satisfecho Delivery staff/courier/public; floating order total + CTA on menu/cart/address and QR checkout ([#360](https://github.com/satisfecho/pos/issues/360)) - `docs/0053` |
+| Delivery | Tera Delivery staff/courier/public; floating order total + CTA on menu/cart/address and QR checkout ([#360](https://github.com/satisfecho/pos/issues/360)) - `docs/0053` |
 | Billing / fiscal | Factura customers; VeriFactu prep ([#326](https://github.com/satisfecho/pos/issues/326)); staff anulación UI + Fiskaly multi-rate IVA ([#431](https://github.com/satisfecho/pos/issues/431)); German TSE Phase 1 ([#316](https://github.com/satisfecho/pos/issues/316)) - `docs/0017`, `docs/0018`, `docs/0065`, `docs/0072` |
 | Inventory | Multi-warehouse MVP ([#320](https://github.com/satisfecho/pos/issues/320)); product stock alerts on staff Products + "Only X left" on QR/Delivery ([#356](https://github.com/satisfecho/pos/issues/356)) - `docs/0061` |
 | Offline | Staff offline cash sale + sync ([#319](https://github.com/satisfecho/pos/issues/319)); deferred-card intent queue (no PAN/CVV) ([#333](https://github.com/satisfecho/pos/issues/333)) - `docs/0063` |
@@ -64,7 +64,7 @@ Core POS plus Jul-Oct 2026 product slices (through **2026-10-22**). Evidence: `C
 | **Wallet pass issuance (Loyalty Club)** | Issuance + push wired (#343); needs live Apple/Google certs in env for production | `docs/0066`; [#343](https://github.com/satisfecho/pos/issues/343) |
 | **Order customizations price deltas** | Core customizations shipped; priced modifiers optional | [#50](https://github.com/satisfecho/pos/issues/50), `docs/0031` |
 
-Open issues: [github.com/satisfecho/pos/issues](https://github.com/satisfecho/pos/issues).
+Tera issues: [Aaditya022/Tera/issues](https://github.com/Aaditya022/Tera/issues). Upstream roadmap references: [satisfecho/pos/issues](https://github.com/satisfecho/pos/issues).
 
 ---
 
@@ -76,7 +76,7 @@ Open issues: [github.com/satisfecho/pos/issues](https://github.com/satisfecho/po
 | **Order management Phase 4** | Advanced ops | Batch status, audit history, post-payment mods - `docs/0007` |
 | **Strict immediate payment** | Product choice | Modal can still be dismissed today |
 | **CAPTCHA after failed login** | Nice-to-have on top of rate limits | Listed in `docs/0020` |
-| **Aggregator delivery (Uber Eats, etc.)** | Distinct from Satisfecho Delivery | Under #52 |
+| **Aggregator delivery (Uber Eats, etc.)** | Distinct from Tera Delivery | Under #52 |
 | **Warehouse transfers / full WMS** | Beyond multi-warehouse MVP | Under #52 |
 | **True offline card capture / offline fiscal** | Hardware & compliance | Intent-only deferred card (#333) shipped; PAN/CVV and offline fiscal numbering remain blocked - `docs/0063` |
 

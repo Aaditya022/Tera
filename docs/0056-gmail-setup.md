@@ -31,8 +31,8 @@ Step-by-step guide to use Gmail for sending transactional emails (e.g. reservati
 
 - Open: **[myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)**  
   (If the link says “App passwords” isn’t available, confirm 2-Step Verification is turned on.)
-- Choose **Select app** → **Mail** (or “Other” and enter a name like “POS2”).
-- Choose **Select device** → **Other** and enter a name (e.g. “POS2 System”).
+- Choose **Select app** → **Mail** (or “Other” and enter a name like “Tera”).
+- Choose **Select device** → **Other** and enter a name (e.g. “Tera Restaurant Platform”).
 - Click **Generate**.
 - Copy the **16-character password** (you can ignore spaces).  
   You won’t be able to see it again after leaving the page.

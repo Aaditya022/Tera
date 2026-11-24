@@ -1,6 +1,6 @@
 # SaaS signup paywall (platform monetization)
 
-Hard paywall for **restaurant / tenant** signups (GitHub issue #296). After guided signup priming (`/register` / `/signup`), new tenants must start a **free trial** or **paid subscription** before using the staff app. This is **platform billing of Satisfecho**, not tenant Stripe keys for guest order payments.
+Hard paywall for **restaurant / tenant** signups (upstream GitHub issue #296). When enabled, after guided signup priming (`/register` / `/signup`), new tenants must start a **free trial** or **paid subscription** before using the staff app. This is **platform billing of Tera**, not tenant Stripe keys for guest order payments. It is disabled for the hackathon demo.
 
 ## Defaults
 
@@ -48,7 +48,7 @@ Prospects can open **`/pricing`** (linked from landing / features nav and footer
 - Hosted monthly price and trial days from live `GET /saas/config` (env-driven; no drifting hardcoded copy).
 - A short “what’s included” list on the hosted tier (QR ordering, kitchen/bar, reservations, reports, loyalty).
 - Self-host / AGPLv3 as a zero license-cost alternative.
-- Optional **professional support** at **€50/h + tax** with contact CTA (`hello@satisfecho.de`).
+- The inherited UI includes an upstream **professional support** offer at **€50/h + tax** (`hello@satisfecho.de`). This is an upstream contact, not a Tera support commitment; review it after submission before offering paid hosting.
 - When `SAAS_PAYWALL_ENABLED` is false, the page still shows plan numbers but states that hosted paywall billing is **not** required on that deployment.
 
 Smoke: `npm run test:pricing --prefix front` (see `docs/testing.md`).
@@ -140,14 +140,14 @@ Ordered checklist (local or amvara9 `/path/to/pos`):
    # Local (HAProxy)
    curl -sS http://127.0.0.1:4202/api/saas/config
    # Production
-   curl -sS https://www.satisfecho.de/api/saas/config
+   curl -sS https://your-domain.tld/api/saas/config
    ```
 6. **Dry-run signup** - Register a throwaway restaurant → finish onboarding → land on `/paywall` → **Start free trial** (or Checkout) → staff dashboard unlocks. Existing grandfathered tenants must still reach `/dashboard` without `/paywall`.
 7. **Smoke (optional)** - With paywall on:
    ```bash
    BASE_URL=http://127.0.0.1:4202 REQUIRE_PAYWALL=1 npm run test:paywall --prefix front
    # Prod example:
-   BASE_URL=https://www.satisfecho.de REQUIRE_PAYWALL=1 npm run test:paywall --prefix front
+   BASE_URL=https://your-domain.tld REQUIRE_PAYWALL=1 npm run test:paywall --prefix front
    ```
    Full notes: `docs/testing.md` (§ SaaS signup paywall). Restore `SAAS_PAYWALL_ENABLED=false` afterward if this was only a local dry-run.
 

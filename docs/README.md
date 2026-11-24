@@ -13,11 +13,14 @@ This folder contains deployment guides, feature documentation, implementation pl
 
 | Need to… | See |
 |----------|-----|
+| Try Tera and record the demo | [tera-demo.md](tera-demo.md) |
+| Review the Tera release and bootstrap procedure | [tera-release.md](tera-release.md) |
+| Review branding corrections and preserved identifiers | [tera-branding-audit.md](tera-branding-audit.md) |
 | Set up Revolut (sandbox, redirects, certificates) | [REVOLUT.md](REVOLUT.md) |
 | Run Puppeteer/UI tests | [testing.md](testing.md) |
 | Multi-agent task loop + GitHub Issues handoff | [agent-loop.md](agent-loop.md) |
 | Deploy to a server | [0004-deployment.md](0004-deployment.md) |
-| Set up CI/CD (amvara9) | [0001-ci-cd-amvara9.md](0001-ci-cd-amvara9.md) |
+| Read the upstream CI/CD reference (amvara9, not Tera deployment) | [0001-ci-cd-amvara9.md](0001-ci-cd-amvara9.md) |
 | Configure Gmail for email | [0056-gmail-setup.md](0056-gmail-setup.md) |
 | Troubleshoot missing reservation confirmation email | [0030-reservation-confirmation-email-troubleshooting.md](0030-reservation-confirmation-email-troubleshooting.md) |
 | Understand reservations / waiting list (staff + public) | [0011-table-reservation-user-guide.md](0011-table-reservation-user-guide.md) |
@@ -44,7 +47,7 @@ This folder contains deployment guides, feature documentation, implementation pl
 
 | Doc | Description |
 |-----|-------------|
-| [0001-ci-cd-amvara9.md](0001-ci-cd-amvara9.md) | CI/CD: deploy to amvara9 on push to master (GitHub Actions, SSH key, secrets); daily demo data reset cron for tenant 1; hourly unpaid public Satisfecho Delivery cleanup cron (all tenants). |
+| [0001-ci-cd-amvara9.md](0001-ci-cd-amvara9.md) | Upstream CI/CD reference: amvara9 deployment, demo reset and unpaid public delivery cleanup. These host-specific instructions do not deploy Tera. |
 | [0073-google-analytics.md](0073-google-analytics.md) | GA4 gtag: measurement ID via gitignored `.secrets`, injected at front container start (never commit the ID). |
 | [0004-deployment.md](0004-deployment.md) | Deployment guide: configuration (API_URL, WS_URL, CORS), deploy steps (git pull, compose, migrations, seeds, optional demo reset). See also [0027](0027-amvara9-menu-images-troubleshooting.md) for uploads 404. |
 | [0057-deploy-css-fix-amvara9.md](0057-deploy-css-fix-amvara9.md) | **Shipped:** stale front build on deploy - `deploy-amvara9.sh` `--no-cache` front + `index.html` no-cache headers; historical incident notes. |
@@ -85,7 +88,7 @@ This folder contains deployment guides, feature documentation, implementation pl
 | [0088-owner-signup-email-verify-inactive-tenants.md](0088-owner-signup-email-verify-inactive-tenants.md) | Owner signup 6-digit email verify, platform notify, and inactive tenant soft/hard delete (#442). |
 | [0053-satisfecho-delivery-order-channel.md](0053-satisfecho-delivery-order-channel.md) | Tera Delivery: staff Delivery tab / courier API, public checkout `/delivery/{tenantId}`, fee/postal/radius coverage, guest track `/delivery/{tenantId}/track`, unpaid public TTL cleanup (issue #297 / #306). |
 | [0054-restaurant-groups.md](0054-restaurant-groups.md) | Restaurant groups: multi-location join codes; optional shared billing customers/products (issue #283). |
-| [0055-public-seo.md](0055-public-seo.md) | Public SEO for satisfecho.de: titles/meta/OG, robots.txt, sitemap.xml, noindex for staff shells (issue #307). |
+| [0055-public-seo.md](0055-public-seo.md) | Tera public SEO: titles/meta/OG, robots.txt, sitemap.xml, noindex for staff shells; legacy URL follow-up after submission (upstream issue #307). |
 | Public `/features` page | Marketing capabilities grid for prospects (no login). Each card links to a detail page at `/features/{slug}`. Linked from landing nav; shares `app-landing-site-footer`. Indexed in root [README.md](../README.md) Features / Access Points; smoke: `npm run test:features --prefix front` ([testing.md](testing.md)). |
 | Public `/about` page | About Tera, with original Satisfecho / Amvara Consulting S.L. attribution (no login). Linked from landing/features/pricing nav and footer Support; shares `app-landing-site-footer`. Smoke: `npm run test:about --prefix front` ([testing.md](testing.md)). |
 | [REVOLUT.md](REVOLUT.md) | Revolut Merchant API: checkout extension, sandbox CSR, redirect URLs, tenant payment setup. |

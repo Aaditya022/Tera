@@ -1,5 +1,8 @@
 # amvara9: Public menu images not loading (satisfecho.de)
 
+> **Upstream incident/runbook.** The domains and host paths below refer to the
+> original deployment. For Tera, use [the release guide](tera-release.md).
+
 ## Status: ops guide - upload routes shipped
 
 Explicit `GET /uploads/...` product/provider routes are **in tree** (`back/app/main.py`) and ship with every normal amvara9 deploy. Do **not** treat a current `/api/uploads/...` **404** as “redeploy for StaticFiles.”

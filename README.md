@@ -1,12 +1,12 @@
 <div align="center">
 
+# Tera
+
 ![Tera - Restaurant POS and ordering](docs/banner.svg)
 
-[![version](https://img.shields.io/github/v/release/satisfecho/pos?style=flat-square&label=version)](https://github.com/satisfecho/pos/releases)
-[![build](https://img.shields.io/github/check-runs/satisfecho/pos/master?style=flat-square&label=build)](https://github.com/satisfecho/pos/actions)
-[![license](https://img.shields.io/github/license/satisfecho/pos?style=flat-square)](LICENSE)
-[![last commit](https://img.shields.io/github/last-commit/satisfecho/pos?style=flat-square)](https://github.com/satisfecho/pos/commits)
-[![stars](https://img.shields.io/github/stars/satisfecho/pos?style=flat-square)](https://github.com/satisfecho/pos/stargazers)
+[![license](https://img.shields.io/github/license/Aaditya022/Tera?style=flat-square)](LICENSE)
+[![last commit](https://img.shields.io/github/last-commit/Aaditya022/Tera/main?style=flat-square)](https://github.com/Aaditya022/Tera/commits/main)
+[![stars](https://img.shields.io/github/stars/Aaditya022/Tera?style=flat-square)](https://github.com/Aaditya022/Tera/stargazers)
 
 [![Docker](https://img.shields.io/badge/deploy-docker--compose-2496ED?style=flat-square&logo=docker&logoColor=white)](docker-compose.yml)
 [![Angular](https://img.shields.io/badge/frontend-Angular-DD0031?style=flat-square&logo=angular&logoColor=white)](front/)
@@ -19,7 +19,9 @@ _A point-of-sale system with a customer-facing menu, table management, and reser
 
 **Topics:** `restaurant-pos` · `multi-tenant` · `self-hosted` · `docker` · `fastapi` · `angular` · `postgresql` · `stripe` · `kitchen-display`
 
-**[Try the upstream Satisfecho live demo →](https://satisfecho.de/)**
+**[Try the Tera demo →](https://donor-chart-kinds-warming.trycloudflare.com/)** · **[Demo guide](docs/tera-demo.md)**
+
+Temporary hackathon hosting: the demo requires the local machine and tunnel to remain running.
 
 ---
 </div>
@@ -27,11 +29,10 @@ _A point-of-sale system with a customer-facing menu, table management, and reser
 
 ## About Tera
 
-Tera is a rebranded distribution of [Satisfecho POS](https://github.com/satisfecho/pos),
-the original project by Amvara Consulting S.L. and its contributors. Original
-copyright, author credits, and AGPLv3 licensing are retained. The badges above
-describe the upstream project. See [the rebrand change log](docs/tera-rebrand.md)
-for scope, verification results, and intentionally preserved legacy references.
+Tera is an open-source restaurant management platform for orders, tables,
+reservations, kitchen workflows, billing and inventory. It builds on an existing
+AGPL-licensed open-source foundation; see [Attribution](#attribution) for the
+original project and contributor credits.
 
 Tera is built for restaurants and venues that want:
 
@@ -49,7 +50,7 @@ You do not need the full POS on day one. Start with **one public feature** and a
 
 ### QR menu only (free to start)
 
-The **digital QR menu** is part of every plan. On **self-host (AGPLv3)** there is **no license fee**. On hosted Satisfecho you get a **free trial** with no card required. Live prices are on the Public pricing row below.
+The **digital QR menu** can be used on its own. Self-hosted Tera is available under **AGPLv3** with **no license fee**. Hosted billing depends on the deployment configuration; the hackathon demo is not a paid hosting offer.
 
 1. **Register** your restaurant ([Getting Started](#getting-started) below).
 2. Add items under **Products** in the staff app.
@@ -71,7 +72,7 @@ Guests can join the **waiting list** at **`/waitlist/{tenantId}`** (linked from 
 
 ### Screenshots
 
-Kitchen display and customer menu - a quick visual sense of the product.
+Kitchen display and customer menu, captured from the running Tera demo on 2026-11-24.
 
 <p float="left">
   <img src="docs/screenshots/kitchen.png" width="48%" alt="Kitchen display - full-screen order cards" />
@@ -128,7 +129,9 @@ Planned, not yet implemented: Order Phase 4 (batch operations, audit, item repla
 
 ## Getting Started
 
-So, you really want to get your hands dirty and install? Then continue reading. If you want to try it out first, you may use the hosted version at [satisfecho.de](https://satisfecho.de). No worries, anything you do on satisfecho.de - your data, your menus - you can export at any time and import the same on a self-hosted stack. Open source, no lock-in. ;-)
+Try the [Tera demo](docs/tera-demo.md), or install your own copy below. Deployment
+preparation and the clean-database bootstrap procedure are documented in the
+[Tera release guide](docs/tera-release.md).
 
 ### Prerequisites
 
@@ -139,8 +142,8 @@ So, you really want to get your hands dirty and install? Then continue reading. 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/satisfecho/pos
-   cd pos
+    git clone https://github.com/Aaditya022/Tera.git
+    cd Tera
    ```
 
 2. **Configure environment**
@@ -296,7 +299,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml --env-file config
 ## Security Notes
 
 - **Production:** Set a strong `SECRET_KEY` and `REFRESH_SECRET_KEY` in `config.env`.
-- **CORS:** Set `CORS_ORIGINS` to your real frontend origin(s). Production refuses `*` at startup; use an exact allowlist (e.g. `https://satisfecho.de`).
+- **CORS:** Set `CORS_ORIGINS` to your real frontend origin(s). Production refuses `*` at startup; use an exact allowlist (e.g. `https://your-domain.tld`).
 - **Database:** Use strong credentials; do not commit `config.env`.
 - **Stripe:** Use live keys in production. Set them per tenant in Settings.
 - **Rate limiting:** Global and per-route limits (login, register, payments, public menu, uploads, admin/management) use Redis. See [docs/0020-rate-limiting-production.md](docs/0020-rate-limiting-production.md). Table PIN attempts stay rate-limited.
@@ -313,6 +316,22 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml --env-file config
 | **DB connection errors** | Ensure `db` is healthy (`docker compose -f docker-compose.yml -f docker-compose.dev.yml ps`); with Compose, use `DB_HOST=db`. Check credentials in `config.env`. |
 
 ---
+
+## Attribution
+
+Tera is a rebranded distribution of **[Satisfecho POS](https://github.com/satisfecho/pos)**,
+originally developed by **Amvara Consulting S.L. and its contributors**. The
+underlying restaurant platform is their open-source work; Tera does not claim
+to have built it from scratch.
+
+- [Upstream source and contributor history](https://github.com/satisfecho/pos)
+- [Upstream project website](https://satisfecho.de/)
+- [Original release history](CHANGELOG.md), retained without rewriting historical entries
+- [Rebrand change log](docs/tera-rebrand.md) and [repository branding audit](docs/tera-branding-audit.md)
+
+Original copyright notices, contributor acknowledgements and the AGPL license
+are retained. Upstream issue links and technical identifiers remain where they
+describe the original work or are required for compatibility.
 
 ## License
 
@@ -339,6 +358,6 @@ The full license text is in [`LICENSE`](LICENSE) (GNU Affero General Public Lice
 
 Stars keep us moving. Every star is a quiet thank-you that tells us this project matters to someone - and that energy helps us keep shipping.
 
-If you hit a bug, have an idea, or want to help shape the product, please [open an issue](https://github.com/satisfecho/pos/issues). We read them.
+If you hit a bug, have an idea, or want to help shape Tera, please [open an issue](https://github.com/Aaditya022/Tera/issues).
 
-[![Star History Chart](https://api.star-history.com/svg?repos=satisfecho/pos&type=Date)](https://star-history.com/#satisfecho/pos&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Aaditya022/Tera&type=Date)](https://star-history.com/#Aaditya022/Tera&Date)

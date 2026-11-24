@@ -5,7 +5,7 @@
 | Decision | Choice |
 |----------|--------|
 | Approach | Custodial processor, fiat-settled (EUR/local Stripe balance) |
-| MVP surface | Public menu + Satisfecho Delivery (not staff POS / split yet) |
+| MVP surface | Public menu + Tera Delivery (not staff POS / split yet) |
 | Provider | Stripe when Crypto/stablecoins is enabled for the merchant (ES/EU private preview / GA per Stripe) |
 | Assets | Stablecoins only (Stripe Crypto payment method; no DIY wallets) |
 | Refunds | Processor crypto refund to the guest wallet (Stripe Dashboard / Refunds API) |

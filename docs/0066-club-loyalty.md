@@ -7,7 +7,7 @@
 Tenant-scoped loyalty distinct from pricing promos (**#322**):
 
 - Guests join via public URL `/loyalty/{tenantId}` (optional `?ref=` referral code)
-- Bare `/loyalty` (no tenant id) shows a short “need a restaurant link” page - it does **not** redirect to the Satisfecho marketing landing (#373)
+- Bare `/loyalty` (no tenant id) shows a short “need a restaurant link” page - it does **not** redirect to the Tera marketing landing (#373)
 - Staff enable rules under **Settings → Loyalty club**
 - Units (points or stamps) earn **once per paid order** when the order is linked to a membership
 - Staff redeem a reward at checkout → `order.loyalty_discount_cents` (order-level discount via `order_discounts.order_level_discount_cents`, shared with #322)
@@ -93,7 +93,7 @@ Implementation: `back/app/loyalty_wallet.py`.
 
 ### Config model (shared platform + per-tenant opt-out)
 
-Satisfecho uses **one shared** Apple Pass Type ID and **one** Google Wallet issuer for the platform (env below). Each pass’s `organizationName` / Google `issuerName` is the **restaurant tenant name**. Tenants can turn issuance off with `loyalty_program.wallet_passes_enabled` (Settings → Loyalty club) without disabling join or the balance card.
+Tera uses **one shared** Apple Pass Type ID and **one** Google Wallet issuer for the platform (env below). Each pass’s `organizationName` / Google `issuerName` is the **restaurant tenant name**. Tenants can turn issuance off with `loyalty_program.wallet_passes_enabled` (Settings → Loyalty club) without disabling join or the balance card.
 
 **Apple multi-merchant note:** A single Pass Type ID for an organization’s own loyalty passes (branded per merchant in pass fields) is the usual SaaS pattern. Confirm ongoing Apple Developer Program terms for your account; if Apple requires a Pass Type ID per merchant, you would need per-tenant cert onboarding (not implemented - out of scope for this MVP).
 

@@ -1,5 +1,8 @@
 # Deploy / CSS fix for amvara9 (satisfecho.de)
 
+> **Historical upstream incident.** This describes the original hosting setup;
+> do not use its restart/deploy commands on the temporary Tera demo.
+
 **Status (shipped):** Stale front builds on amvara9 are addressed in-repo. `scripts/deploy-amvara9.sh` builds the front image with `--no-cache` (after removing any existing front image), and `front/nginx.conf` sets `Cache-Control: no-cache, no-store, must-revalidate` on the SPA document (`location /`). The sections below keep the original incident narrative and proposed diffs as historical context.
 
 ## Problem (historical)

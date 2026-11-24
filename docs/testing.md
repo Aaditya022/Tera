@@ -8,7 +8,7 @@ This document describes the UI test suite maintained for the POS project. All UI
 - **App built and running** (e.g. `docker compose up`; frontend must serve successfully - see `AGENTS.md` for port and logs). If the frontend build fails (e.g. TypeScript errors), UI tests will get 503 or timeouts.
 - Optional: `.env` in repo root with `DEMO_LOGIN_EMAIL`, `DEMO_LOGIN_PASSWORD` for tests that need login.
 
-Tests auto-detect the first responding port among **4203, 4202, 4200** when `BASE_URL` is not set. For production (e.g. satisfecho.de), set `BASE_URL` explicitly.
+Tests auto-detect the first responding port among **4203, 4202, 4200** when `BASE_URL` is not set. For Tera, always set `BASE_URL` explicitly to your own deployment: several inherited scripts still fall back to the upstream production website. Runtime/script-default corrections are deferred until after submission.
 
 ## Contrast (UI colour)
 
@@ -22,7 +22,7 @@ When verifying UI that changes colours, backgrounds, or chrome (nav, buttons, te
 
 | Variable | Description |
 |----------|-------------|
-| `BASE_URL` | App base URL (e.g. `http://127.0.0.1:4203`, `http://satisfecho.de`). Default: auto-detect localhost port or fallback. |
+| `BASE_URL` | App base URL (e.g. `http://127.0.0.1:4203`, `https://your-domain.tld`). Set explicitly for Tera; inherited fallback behaviour is described below. |
 | `HEADLESS` | Default **headless**. Set `0`, `false`, or `no` for a visible Chrome window. |
 | `PUPPETEER_EXECUTABLE_PATH` | Path to Chrome binary; default macOS: `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`. |
 | `LOGIN_EMAIL` / `LOGIN_PASSWORD` | Staff/demo user for login-required tests. Often loaded from `.env` as `DEMO_LOGIN_EMAIL` / `DEMO_LOGIN_PASSWORD`. |
@@ -97,7 +97,7 @@ node front/scripts/debug-reservations.mjs
 ./scripts/run-reservation-tests.sh
 # With staff test: STAFF_TEST=1 ./scripts/run-reservation-tests.sh
 # Headless: HEADLESS=1 ./scripts/run-reservation-tests.sh
-# Custom URLs: BASE_URLS="http://127.0.0.1:4203 http://satisfecho.de" ./scripts/run-reservation-tests.sh
+# Custom URLs: BASE_URLS="http://127.0.0.1:4203 https://your-domain.tld" ./scripts/run-reservation-tests.sh
 ```
 
 | Script | Purpose |
@@ -112,7 +112,7 @@ node front/scripts/debug-reservations.mjs
 ```bash
 node front/scripts/test-reservation-create.mjs
 # amvara9 headless (sends confirmation to ralf.roeber@amvara.de by default):
-#   BASE_URL=https://www.satisfecho.de HEADLESS=1 node front/scripts/test-reservation-create.mjs
+#   BASE_URL=https://your-domain.tld HEADLESS=1 node front/scripts/test-reservation-create.mjs
 # Override email: TEST_EMAIL=you@your-domain.com node front/scripts/test-reservation-create.mjs
 # Or: npm run test:reservation-create --prefix front
 ```
@@ -125,7 +125,7 @@ Checks tenant 1 has ≥10 tables, ≥10 products, and that `/book/1` loads. Uses
 
 ```bash
 npm run test:demo-data --prefix front
-# Or: BASE_URL=http://satisfecho.de LOGIN_EMAIL=... LOGIN_PASSWORD=... node front/scripts/test-demo-data.mjs
+# Or: BASE_URL=https://your-domain.tld LOGIN_EMAIL=... LOGIN_PASSWORD=... node front/scripts/test-demo-data.mjs
 ```
 
 - **Env:** `BASE_URL`, `LOGIN_EMAIL`, `LOGIN_PASSWORD`, `BOOK_TENANT_ID` (default `1`), `HEADLESS`.
@@ -161,7 +161,7 @@ npm run test:restaurant-groups --prefix front
 
 ### 2a3. Staff Tera Delivery (create + edit)
 
-Smoke for staff **`/staff/orders`**: open **New delivery order**, create a Satisfecho Delivery order (address, phone, one product; optional courier), assert Delivery tab channel badge / address, then **Edit delivery** and save a phone change. Does not cover public checkout (`test:delivery-checkout`) or courier portal (`test:courier-actions`).
+Smoke for staff **`/staff/orders`**: open **New delivery order**, create a Tera Delivery order (address, phone, one product; optional courier), assert Delivery tab channel badge / address, then **Edit delivery** and save a phone change. Does not cover public checkout (`test:delivery-checkout`) or courier portal (`test:courier-actions`). The inherited script still matches the old displayed delivery name; align that assertion with Tera after submission before treating it as a release gate.
 
 ```bash
 npm run test:staff-delivery --prefix front
@@ -216,7 +216,7 @@ npm run test:courier-actions --prefix front
 
 ### 2a3d. Platform operator portal
 
-Smoke for the SaaS platform operator dashboard (`/platform`, login at `/platform/login`): log in, assert metric cards on the dashboard, open a tenant detail page, and confirm the public Satisfecho Delivery link for that tenant. See `docs/0059-platform-operator-portal.md`. Does not cover tenant staff login, paywall (`test:paywall`), or courier portal (`test:courier-actions`).
+Smoke for the SaaS platform operator dashboard (`/platform`, login at `/platform/login`): log in, assert metric cards on the dashboard, open a tenant detail page, and confirm the public Tera Delivery link for that tenant. See `docs/0059-platform-operator-portal.md`. Does not cover tenant staff login, paywall (`test:paywall`), or courier portal (`test:courier-actions`).
 
 ```bash
 npm run test:platform-operator --prefix front
@@ -400,7 +400,7 @@ npm run test:landing-version --prefix front
 - Asserts `[data-testid="landing-version"]` or `.landing-version-bar` is visible and contains a version-like string (e.g. `1.0.1`). Skips if redirected to dashboard/login.
 - After a **`front/package.json`** version bump, run **`node front/scripts/get-commit-hash.js`** and commit **`commit-hash.ts`** with the bump so the footer semver matches (see committer / commit-changelog-version rule).
 - When `LOGIN_EMAIL`/`LOGIN_PASSWORD` or `DEMO_LOGIN_EMAIL`/`DEMO_LOGIN_PASSWORD` are set (e.g. from repo `.env`), also logs in with `TENANT_ID` (default `1`), then from `/dashboard` clicks each visible sidebar `a.nav-link` and each inventory `a.nav-sublink` (opens the inventory section when needed). Fullscreen routes (`/kitchen`, `/bar`) have no sidebar, so the test returns to `/dashboard` before each link. Without credentials, only the landing check runs (CI-friendly).
-- Set `LANDING_VERSION_ONLY=1` to force only the landing/version step even when `.env` defines demo login vars (e.g. `BASE_URL=https://satisfecho.de` smoke without a **401** from wrong credentials).
+- Set `LANDING_VERSION_ONLY=1` to force only the landing/version step even when `.env` defines demo login vars (e.g. `BASE_URL=https://your-domain.tld` smoke without a **401** from wrong credentials).
 - For **non-local** `BASE_URL`, the script runs a short HTTP reachability probe to `/` before Puppeteer so firewall/sandbox issues fail fast with a clear hint. Set `LANDING_SMOKE_NO_REACHABILITY_PROBE=1` to skip that probe. Use `SKIP_LANDING_PACKAGE_VERSION_CHECK=1` when the deployed footer semver may differ from this checkout’s `front/package.json`.
 
 **Provider login and register links:**
@@ -519,7 +519,7 @@ npm run test:guided-signup-wizard --prefix front
 
 ```bash
 npm run test:register --prefix front
-# Or: BASE_URL=http://satisfecho.de node front/scripts/test-register.mjs
+# Or: BASE_URL=https://your-domain.tld node front/scripts/test-register.mjs
 ```
 
 - **Env:** `BASE_URL`, `REGISTER_EMAIL`, `REGISTER_PASSWORD`, `REGISTER_FULL_NAME`, `REGISTER_TENANT_NAME`, `HEADLESS`. Uses unique email by default (`test-<timestamp>@amvara.de`).
@@ -583,7 +583,7 @@ Login, open `/catalog`, count cards and how many show real images vs placeholder
 
 ```bash
 npm run test:catalog --prefix front
-# Or: LOGIN_EMAIL=... LOGIN_PASSWORD=... BASE_URL=http://satisfecho.de node front/scripts/test-catalog.mjs
+# Or: LOGIN_EMAIL=... LOGIN_PASSWORD=... BASE_URL=https://your-domain.tld node front/scripts/test-catalog.mjs
 ```
 
 - **Env:** `BASE_URL`, `LOGIN_EMAIL`, `LOGIN_PASSWORD`, `HEADLESS`.
@@ -867,7 +867,7 @@ From repo root: `npm run <script> --prefix front`. From `front/`: `npm run <scri
 | `test:courier-actions` | `scripts/test-courier-actions.mjs` (courier portal status actions; `COURIER_EMAIL` / `COURIER_PASSWORD`, defaults `demo-courier@tera.test` / `secret` - also in `config.env.example`) |
 | `test:delivery-checkout` | `scripts/test-delivery-checkout.mjs` (public `/delivery/:tenantId` menu → cart → address → create; no login; see `docs/0053`) |
 | `test:delivery-track` | `scripts/test-delivery-track.mjs` (public `/delivery/:tenantId/track` invalid-token / error-state; see `docs/0053`) |
-| `test:staff-delivery` | `scripts/test-staff-delivery.mjs` (staff `/staff/orders`: create Satisfecho Delivery + edit address/phone; needs `LOGIN_*` / `DEMO_LOGIN_*`) |
+| `test:staff-delivery` | `scripts/test-staff-delivery.mjs` (staff `/staff/orders`: create Tera Delivery + edit address/phone; inherited display assertion needs updating; needs `LOGIN_*` / `DEMO_LOGIN_*`) |
 | `test:api-docs` | `scripts/test-api-docs.mjs` (Swagger `/api/docs` + OpenAPI; no login) |
 | `test:websocket` | `scripts/test-websocket.mjs` (post-login WS on `/orders`; needs ws-bridge + `LOGIN_*` / `DEMO_LOGIN_*`) |
 | `test:amvara9-smoke` | `scripts/test-amvara9-smoke.mjs` (prod smoke: landing/login/book + `/api/health`; **default `BASE_URL=https://www.satisfecho.de`**) |
@@ -890,7 +890,7 @@ From repo root: `npm run <script> --prefix front`. From `front/`: `npm run <scri
 - **Sync Product images after catalog import:** `docker compose exec back python -m app.seeds.sync_product_images` - repairs stale `Product.image_filename` from linked `TenantProduct`/provider files (safe for custom tenant uploads). Deploy runs this automatically.
 - **Product image health (deploy):** `docker compose exec back python -m app.seeds.check_product_image_health` - fails when public menu shows an image for a linked product but `/products` would not (tenant 1 by default).
 - **Demo courier user:** `docker compose exec back python -m app.seeds.seed_demo_courier_user` - ensures tenant 1 has one `courier` role user when missing (`COURIER_EMAIL` / `COURIER_PASSWORD`, defaults `demo-courier@tera.test` / `secret`). Bootstrap / `reset_demo_data` run this **before** demo orders so Delivery samples can assign courier / `out_for_delivery`.
-- **Demo orders (Reports + Delivery):** `docker compose exec back python -m app.seeds.seed_demo_orders` - seeds tenant 1 with paid/active **table** orders over ±90 days plus a small Satisfecho Delivery mix. Idempotent: skips when Delivery samples already exist; if only table orders exist, adds the Delivery mix without wiping them. Bootstrap / `reset_demo_data` run this. Optional: `./run_seeds.sh --demo-orders` from `back/`.
+- **Demo orders (Reports + Delivery):** `docker compose exec back python -m app.seeds.seed_demo_orders` - seeds tenant 1 with paid/active **table** orders over ±90 days plus a small Tera Delivery mix. Idempotent: skips when Delivery samples already exist; if only table orders exist, adds the Delivery mix without wiping them. Bootstrap / `reset_demo_data` run this. Optional: `./run_seeds.sh --demo-orders` from `back/`.
 - **Demo delivery orders check:** `docker compose exec back python -m app.seeds.check_demo_delivery_orders` (exit 0 = tenant 1 has ≥1 `order_channel=satisfecho_delivery` row; soft-warns if none have `courier_user_id`).
 - **Demo waiting list:** `docker compose exec back python -m app.seeds.seed_demo_waiting_list` - seeds tenant 1 with a few `waiting` + one `notified` entry for staff Waitlist / public `/waitlist/1`; idempotent (skips if entries exist). Bootstrap / `reset_demo_data` run this.
 - **Demo waiting list check:** `docker compose exec back python -m app.seeds.check_demo_waiting_list` (exit 0 = tenant 1 has ≥1 `waiting` and ≥1 `notified` row).

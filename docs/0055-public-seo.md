@@ -1,6 +1,12 @@
-# Public SEO (satisfecho.de)
+# Tera Public SEO
 
 Short note for marketing / public surfaces of the Angular SPA (`front/`).
+
+The document title, descriptions and local share image are branded Tera. Legacy
+absolute URLs in the static shell, sitemap, robots file and server-side SEO
+fallback still point to the upstream website. Correct those together after
+submission using the permanent deployment origin; do not bake a temporary tunnel
+URL into crawler metadata. See [the branding audit](tera-branding-audit.md).
 
 ## What we ship
 
@@ -27,6 +33,6 @@ curl -sI http://127.0.0.1:4202/sitemap.xml  # application/xml or text/xml
 curl -s http://127.0.0.1:4202/ | head -n 40 # title + meta description present
 ```
 
-Chrome DevTools → Lighthouse → SEO (or PageSpeed Insights) on `https://satisfecho.de` and `/features`. Expect meta-description and robots.txt audits to pass.
+Run Chrome DevTools → Lighthouse → SEO (or PageSpeed Insights) on your deployed Tera origin and `/features`. Check the canonical and share-image URLs as well as the meta-description and robots.txt audits; the legacy absolute URLs above are still pending correction.
 
 Related issue: [#307](https://github.com/satisfecho/pos/issues/307).

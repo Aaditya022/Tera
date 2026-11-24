@@ -1,8 +1,8 @@
-# Deployment Guide
+# Tera Deployment Guide
 
-This guide covers **configuration** (API_URL, WS_URL, CORS) and **deploy steps** to run POS on a server or custom domain.
+This guide covers **configuration** (API_URL, WS_URL, CORS) and **deploy steps** to run Tera on a server or custom domain. For the Tera bootstrap procedure and current demo deployment, start with [tera-release.md](tera-release.md).
 
-**amvara9:** Automatic deploy on push to master is set up via GitHub Actions. See [0001-ci-cd-amvara9.md](0001-ci-cd-amvara9.md).
+**Upstream reference:** amvara9 automatic deployment belongs to the original project, not this Tera repository. See [0001-ci-cd-amvara9.md](0001-ci-cd-amvara9.md); do not run its host-specific commands against the temporary demo.
 
 ---
 
@@ -51,7 +51,7 @@ Comma-separated **exact** front-end origins (protocol + host + port) allowed to 
 
 **Production (required allowlist - `*` refused at startup when `PRODUCTION=true`):**
 ```bash
-CORS_ORIGINS=https://satisfecho.de
+CORS_ORIGINS=https://your-domain.tld
 # or multiple:
 CORS_ORIGINS=https://app.yourdomain.com,https://admin.yourdomain.com
 ```
@@ -75,7 +75,7 @@ CORS_ORIGINS=http://localhost:4202,http://127.0.0.1:4202,http://localhost:4200,h
 # config.env
 API_URL=/api
 WS_URL=
-CORS_ORIGINS=https://satisfecho.de
+CORS_ORIGINS=https://your-domain.tld
 ```
 
 **IP Address on local network (dev / no PRODUCTION):**
@@ -95,7 +95,7 @@ CORS_ORIGINS=http://localhost:4202,http://127.0.0.1:4202,http://localhost:4200,h
 ```
 
 **Production (server behind one port):**  
-Prefer relative `API_URL=/api` and empty `WS_URL` (same-origin). Set `CORS_ORIGINS` to the exact origin(s) where users open the app (e.g. `https://satisfecho.de`). Set `SECRET_KEY` and `REFRESH_SECRET_KEY` to strong random values.
+Prefer relative `API_URL=/api` and empty `WS_URL` (same-origin). Set `CORS_ORIGINS` to the exact origin(s) where users open the app (e.g. `https://your-domain.tld`). Set `SECRET_KEY` and `REFRESH_SECRET_KEY` to strong random values.
 
 ### Production flag (`PRODUCTION`)
 
@@ -141,7 +141,7 @@ Steps to get the latest **master** or **main** branch deployed on a server where
    Do not overwrite it with the example. Ensure it has production values for:
    - `API_URL` - full URL to the API (e.g. `https://yourdomain.com/api` or `http://host:8020/api` if behind one port)
    - `WS_URL` - WebSocket URL (e.g. `wss://yourdomain.com/ws` or `ws://host:8021/ws`)
-   - `CORS_ORIGINS` - exact origin(s) where the frontend is served (no `*`; e.g. `https://satisfecho.de`)
+   - `CORS_ORIGINS` - exact origin(s) where the frontend is served (no `*`; e.g. `https://your-domain.tld`)
    - `SECRET_KEY` and `REFRESH_SECRET_KEY` - strong random values in production
 
 4. **Rebuild and start (production mode)**  
@@ -169,7 +169,7 @@ Steps to get the latest **master** or **main** branch deployed on a server where
    # or: docker compose --env-file config.env -f docker-compose.yml -f docker-compose.prod.yml exec -T back python -m app.seeds.reset_demo_data
    ```
 
-   Separately, schedule the hourly unpaid public Satisfecho Delivery cleanup (all tenants; not covered by demo reset). See [Unpaid public Satisfecho Delivery cleanup](0001-ci-cd-amvara9.md#unpaid-public-satisfecho-delivery-cleanup-all-tenants) and `./scripts/cleanup-unpaid-public-delivery-on-server.sh`.
+   Separately, schedule the hourly unpaid public Tera Delivery cleanup (all tenants; not covered by demo reset). See the [upstream cleanup runbook](0001-ci-cd-amvara9.md#unpaid-public-satisfecho-delivery-cleanup-all-tenants) and `./scripts/cleanup-unpaid-public-delivery-on-server.sh`.
 
 8. **Check that everything is up**  
    - Logs: `docker compose --env-file config.env logs -f --tail=50`

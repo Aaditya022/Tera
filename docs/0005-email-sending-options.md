@@ -47,7 +47,7 @@ If using Proton Mail SMTP:
 1. **Proton Account Setup:**
    ```
    - Sign up for Proton Mail Plus/Business
-   - Add custom domain (e.g., pos2.yourdomain.com)
+   - Add your own mail domain (e.g., tera.yourdomain.com)
    - Configure DNS records (SPF, DKIM, DMARC)
    ```
 

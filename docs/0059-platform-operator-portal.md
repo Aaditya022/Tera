@@ -1,6 +1,6 @@
 # Platform operator portal - Documentation
 
-This document describes the **platform operator portal**: login and SaaS oversight for Satisfecho platform administrators. It is distinct from the **provider portal** (`/provider`) and **tenant staff** login (`/login`).
+This document describes the **platform operator portal**: login and SaaS oversight for Tera platform administrators. It is distinct from the **provider portal** (`/provider`) and **tenant staff** login (`/login`).
 
 ---
 
@@ -23,7 +23,7 @@ Platform operators can:
     - `/public-menu/{id}` - guest menu
     - `/{slug}/book` or `/book/{id}` - reservations / booking
     - `/waitlist/{id}` - waitlist
-    - `/delivery/{id}` - Satisfecho Delivery checkout
+    - `/delivery/{id}` - Tera Delivery checkout
 
 Operator users live in the same `User` table with `role=platform_operator`, `tenant_id=NULL`, and `provider_id=NULL`.
 

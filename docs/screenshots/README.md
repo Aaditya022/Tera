@@ -1,8 +1,21 @@
-# Screenshots
+# Tera Screenshots
 
-This folder holds upstream screenshots used in the main [README.md](../../README.md) and in feature docs. They document existing workflows and may show the original POS2 / Satisfecho branding; the running product is branded Tera.
+The landing, orders, kitchen, reports, reservations, menu, delivery and waiting-list
+images were captured directly from the running Tera HTTPS demo on **2026-11-24**
+at **1440 × 1000**, using isolated demo tenant 6. These are genuine browser captures,
+not edited mockups. Empty states and missing demo product photos are shown as-is.
+
+The tables, provider, courier and platform images remain **historical upstream
+screenshots** and may show POS2 / Satisfecho. They are not evidence of the current
+Tera UI. A fresh tables capture stayed in the loading state during this audit;
+the other roles were not accessed. Retake these after submission rather than
+altering the running application or inventing screenshots.
 
 ## Screenshots
+
+### Tera landing
+
+![Tera landing page captured from the public demo](tera-landing.png)
 
 ### Orders
 
@@ -28,7 +41,7 @@ Reservations list and management. See [docs/0011-table-reservation-user-guide.md
 
 ![Reservations at /reservations](reservations.png)
 
-### Tables
+### Tables (historical upstream screenshot)
 
 Tables canvas and floor plan.
 
@@ -40,7 +53,7 @@ Customer-facing menu at `/menu/{table_token}`: products, cart, place order. Used
 
 ![Customer menu](menu.png)
 
-### Provider dashboard
+### Provider dashboard (historical upstream screenshot)
 
 Provider catalog management. See [docs/0014-provider-portal.md](../0014-provider-portal.md).
 
@@ -58,13 +71,13 @@ Walk-in join form at `/waitlist/{tenantId}`. See [docs/0011-table-reservation-us
 
 ![Public waiting list](waitlist.png)
 
-### Courier portal
+### Courier portal (historical upstream screenshot)
 
 Courier home after `/courier/login` (Available / Mine / Completed). See [docs/0053-satisfecho-delivery-order-channel.md](../0053-satisfecho-delivery-order-channel.md).
 
 ![Courier portal home](courier.png)
 
-### Platform operator
+### Platform operator (historical upstream screenshot)
 
 Operator dashboard at `/platform`. See [docs/0059-platform-operator-portal.md](../0059-platform-operator-portal.md).
 
@@ -76,6 +89,7 @@ Operator dashboard at `/platform`. See [docs/0059-platform-operator-portal.md](.
 
 | File | Where it's used |
 |------|------------------|
+| `tera-landing.png` | Current Tera landing reference |
 | `orders.png` | - |
 | `kitchen.png` | Main README (screenshot collage); docs/0015-kitchen-display.md |
 | `reports.png` | docs/0016-reports.md |

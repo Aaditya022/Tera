@@ -1,5 +1,9 @@
 # Agent loop - mac-stats-reviewer-style process for POS
 
+> **Upstream automation reference.** Repository names and operational defaults
+> below belong to the original project. They are retained as documentation, not
+> configured as Tera automation. Do not run them against upstream on Tera's behalf.
+
 This document defines a **multi-agent workflow** for this repository, modeled on the **mac-stats-reviewer** companion project (local reference: `~/projects/mac-stats-reviewer`). That project separates **coordination** (`mac-stats-reviewer`: tasks, prompts, optional autoresearch) from **implementation** (`mac-stats`). **POS is a single repo**: application code and agent coordination both live here; the split is **logical** (roles and folders), not two git roots.
 
 **Sources in mac-stats-reviewer used as basis:** root `README.md` (agents overview, hourly commits - *not* adopted verbatim for POS), `agents/tasks/README.md` (task pipeline), and agent prompts under `agents/001-log-reviewer/` … `agents/007-committer/` (roles and handoffs). Optional **Track A autoresearch** (`agents/autoresearch/README.md`, `RUN_24H_*.md`) is **out of scope** for initial POS adoption unless you explicitly port tooling.
@@ -343,4 +347,3 @@ mac-stats-reviewer’s **`agents/autoresearch/README.md`** describes **Track A**
 - **`.cursor/rules/commit-changelog-version.mdc`** - changelog and version bump when cutting work.
 
 ---
-

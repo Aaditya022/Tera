@@ -1,5 +1,9 @@
 # CI/CD: Deploy to amvara9 on push to master
 
+> **Upstream operations reference.** These hosts, domains, branch names and CI
+> instructions describe the original project. They are not Tera's deployment.
+> Use [the Tera release guide](tera-release.md) and [demo guide](tera-demo.md).
+
 When code is pushed to the **production branch** (**`master`**) of **https://github.com/satisfecho/pos**, GitHub Actions deploys to **amvara9** (167.235.138.59). Pushes to **`development`** do **not** trigger deploy (merge **`development` → `master`** to ship). Rename **`master` → `main`** on GitHub if your policy uses **`main`**; then update `.github/workflows/deploy-amvara9.yml` **`push.branches`** accordingly.
 
 **Daily promote (agent loop):** **`agents2/pos-cursor-loop.sh`** step **009** runs **`scripts/promote-development-to-master.sh`** after the committer when **`development`** is ahead of **`master`** and the last master tip is at least **`AGENT_PROMOTE_INTERVAL_HOURS`** old (default **24**). That merge+push to **`master`** is what triggers this workflow. Manual: `AGENT_PROMOTE_FORCE=1 ./scripts/promote-development-to-master.sh` (optional **`AGENT_PROMOTE_WAIT_DEPLOY=1`** to poll the Actions run).

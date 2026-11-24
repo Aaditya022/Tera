@@ -78,7 +78,7 @@ The waiting list is for **walk-in guests** who want a table **without** picking 
 1. **Get the waiting-list link**  
    Share **`/waitlist/:tenantId`** (same tenant ID as booking), or send guests to **`/{public_slug}/book`** (or `/book/:tenantId`) and have them click **Join the waiting list** when no table is free.
    - **Local example**: `http://127.0.0.1:4202/waitlist/1`
-   - **Production example**: `https://www.satisfecho.de/waitlist/1`
+   - **Production example**: `https://your-domain.tld/waitlist/1` (use your deployed Tera domain)
 
 2. **Open the form**  
    The guest sees name, party size, and phone (same contact validation as booking). No account required.

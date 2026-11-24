@@ -1,5 +1,8 @@
 # HAProxy SSL on amvara9 (durable configuration)
 
+> **Upstream host reference.** Domain names and certificate paths below belong
+> to the original deployment, not the Tera demo. Retained for historical context.
+
 SSL for satisfecho.de is terminated by HAProxy in the POS stack. This document explains how the certificate is integrated so it **survives deploy and rebuilds**, and how to restore it if it was lost.
 
 ## Why the certificate can disappear
