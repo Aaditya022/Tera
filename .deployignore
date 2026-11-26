@@ -1,0 +1,15 @@
+.git/
+.github/
+tmp/
+front/node_modules/
+front/dist/
+back/venv/
+back/.venv/
+.venv/
+venv/
+config.env
+.env
+.secrets
+tera-demo-final.mp4
+tera-demo.mp4
+tera-demo.webm

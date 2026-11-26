@@ -1,0 +1,88 @@
+zerops:
+  - setup: web
+    build:
+      base: nodejs@22
+      buildCommands:
+        - |
+          cd front
+          npm ci --ignore-scripts
+          npm run build -- --configuration production-static
+          node scripts/inject-version-into-index.js
+        - |
+          rm -rf web-dist
+          mkdir -p web-dist
+          cp -R front/dist/front/browser/. web-dist/
+          cp -R front/sites web-dist/sites
+          MARKETING_SITES_BASE=front/sites MARKETING_SITES_ROOT=/var/www/web-dist/sites sh front/scripts/generate-marketing-nginx-include.sh > web-marketing.conf
+      deployFiles:
+        - web-dist
+        - web-marketing.conf
+        - zerops-web.conf
+      cache: front/node_modules
+    run:
+      base: alpine/nginx@latest
+      ports:
+        - port: 80
+          httpSupport: true
+      documentRoot: web-dist
+      siteConfigPath: zerops-web.conf
+      healthCheck:
+        httpGet:
+          port: 80
+          path: /health
+  - setup: api
+    build:
+      base: python@3.12
+      deployFiles:
+        - back/app
+        - back/migrations
+        - ws-bridge/main.py
+      addToRunPrepare:
+        - back/requirements.txt
+        - ws-bridge/requirements.txt
+    run:
+      base: python@3.12
+      ports:
+        - port: 8020
+          httpSupport: true
+      prepareCommands:
+        - python3 -m pip install --ignore-installed --no-cache-dir -r /home/zerops/back/requirements.txt -r /home/zerops/ws-bridge/requirements.txt
+      initCommands:
+        - mkdir -p /var/www/back/uploads/providers
+      volume:
+        hostname: vol
+        mountPath: /var/www/back/uploads
+      envVariables:
+        DB_HOST: ${db_hostname}
+        DB_PORT: ${db_port}
+        DB_USER: ${db_user}
+        DB_PASSWORD: ${db_password}
+        DB_NAME: db
+        REDIS_URL: ${redis_connectionString}
+      start: cd /var/www/back && exec python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8020 --no-access-log
+      healthCheck:
+        httpGet:
+          port: 8020
+          path: /health
+  - setup: ws
+    build:
+      base: python@3.12
+      deployFiles:
+        - ws-bridge/main.py
+      addToRunPrepare:
+        - ws-bridge/requirements.txt
+    run:
+      base: python@3.12
+      ports:
+        - port: 8021
+          httpSupport: true
+      prepareCommands:
+        - python3 -m pip install --ignore-installed --no-cache-dir -r /home/zerops/ws-bridge/requirements.txt
+      envVariables:
+        REDIS_URL: ${redis_connectionString}
+        API_URL: http://api:8020
+      start: cd /var/www/ws-bridge && exec python3 -m uvicorn main:app --host 0.0.0.0 --port 8021 --no-access-log
+      healthCheck:
+        httpGet:
+          port: 8021
+          path: /health

@@ -3,7 +3,8 @@
 # Called from Dockerfile.prod after COPY sites/ → /usr/share/nginx/html/sites/
 
 set -e
-BASE=/usr/share/nginx/html/sites
+BASE=${MARKETING_SITES_BASE:-/usr/share/nginx/html/sites}
+SITE_ROOT=${MARKETING_SITES_ROOT:-/usr/share/nginx/html/sites}
 
 if ! [ -d "$BASE" ]; then
   echo "# marketing: no $BASE"
@@ -21,7 +22,7 @@ for d in "$BASE"/*/; do
   echo "    }"
   echo ""
   echo "    location ^~ /${slug}/ {"
-  echo "        root /usr/share/nginx/html/sites;"
+  echo "        root $SITE_ROOT;"
   echo "        try_files \$uri \$uri/ /${slug}/index.html;"
   echo "        add_header Cache-Control \"no-cache, no-store, must-revalidate\";"
   echo ""
