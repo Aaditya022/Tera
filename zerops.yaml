@@ -33,25 +33,106 @@ zerops:
   - setup: api
     build:
       base: python@3.12
+      buildCommands:
+        - cp -R back/app app
+        - cp -R back/migrations migrations
+        - cp back/requirements.txt requirements.txt
+        - cp ws-bridge/main.py ws_bridge_main.py
+        - cp ws-bridge/requirements.txt ws_bridge_requirements.txt
       deployFiles:
-        - back/app
-        - back/migrations
-        - ws-bridge/main.py
+        - app
+        - migrations
+        - requirements.txt
+        - ws_bridge_main.py
+        - ws_bridge_requirements.txt
       addToRunPrepare:
-        - back/requirements.txt
-        - ws-bridge/requirements.txt
+        - requirements.txt
+        - ws_bridge_requirements.txt
     run:
       base: python@3.12
       ports:
         - port: 8020
           httpSupport: true
       prepareCommands:
-        - python3 -m pip install --ignore-installed --no-cache-dir -r /home/zerops/back/requirements.txt -r /home/zerops/ws-bridge/requirements.txt
+        - python3 -m pip install --ignore-installed --no-cache-dir -r /home/zerops/requirements.txt -r /home/zerops/ws_bridge_requirements.txt
       initCommands:
-        - mkdir -p /var/www/back/uploads/providers
+        - |
+          cd /var/www
+          python3 - <<'PY'
+          from app.db import engine
+          from sqlalchemy import text
+          types = {
+              "user_role": ["owner", "admin", "kitchen", "bartender", "waiter", "receptionist", "courier", "provider", "platform_operator"],
+              "staff_contract_kind": ["employee", "freelancer"],
+              "staff_contract_status": ["draft", "pending_signature", "active", "expired", "superseded"],
+              "staff_contract_payment_structure": ["payroll", "invoice"],
+          }
+          with engine.begin() as connection:
+              for name, values in types.items():
+                  quoted = ", ".join(f"'{value}'" for value in values)
+                  connection.execute(text(f"DO $$ BEGIN CREATE TYPE {name} AS ENUM ({quoted}); EXCEPTION WHEN duplicate_object THEN null; END $$;"))
+          PY
+        - cd /var/www && python3 -c "import app.models; from app.db import create_db_and_tables; create_db_and_tables()"
+        - cd /var/www && python3 -m app.migrate
+        - |
+          cd /var/www
+          python3 - <<'PY'
+          import os
+          os.environ.setdefault("COURIER_EMAIL", "demo-courier@tera.test")
+          os.environ.setdefault("COURIER_PASSWORD", "TeraCourier2026!")
+          from app.seeds.seed_demo_tables import run as seed_tables
+          from app.seeds.seed_demo_products import run as seed_products
+          from app.seeds.seed_demo_delivery_settings import run as seed_delivery_settings
+          from app.seeds.seed_demo_courier_user import run as seed_courier_user
+          from app.seeds.seed_demo_orders import run as seed_orders
+          from app.seeds.seed_demo_reservations import run as seed_reservations
+          from app.seeds.seed_demo_waiting_list import run as seed_waiting_list
+
+          seed_tables()
+          seed_products()
+          seed_delivery_settings()
+          seed_courier_user()
+          seed_orders()
+          seed_reservations()
+          seed_waiting_list()
+          PY
+        - |
+          cd /var/www
+          python3 - <<'PY'
+          import os
+          from sqlmodel import Session, select
+          from app import models
+          from app.db import engine
+          from app.security import get_password_hash
+
+          email = os.environ.get("DEMO_LOGIN_EMAIL", "demo@tera.test").strip()
+          password = os.environ.get("DEMO_LOGIN_PASSWORD", "TeraDemo2026!")
+          with Session(engine) as session:
+              tenant = session.exec(select(models.Tenant).order_by(models.Tenant.id)).first()
+              if tenant is None:
+                  raise SystemExit("No tenant found for demo owner")
+              user = session.exec(select(models.User).where(models.User.email == email)).first()
+              if user is None:
+                  user = models.User(
+                      email=email,
+                      hashed_password=get_password_hash(password),
+                      full_name="Demo Owner",
+                      tenant_id=tenant.id,
+                      role=models.UserRole.owner,
+                      email_verified=True,
+                  )
+                  session.add(user)
+              else:
+                  user.hashed_password = get_password_hash(password)
+                  user.email_verified = True
+                  user.tenant_id = tenant.id
+                  user.role = models.UserRole.owner
+              session.commit()
+          PY
+        - mkdir -p /var/www/uploads/providers
       volume:
         hostname: vol
-        mountPath: /var/www/back/uploads
+        mountPath: /var/www/uploads
       envVariables:
         DB_HOST: ${db_hostname}
         DB_PORT: ${db_port}
@@ -59,7 +140,7 @@ zerops:
         DB_PASSWORD: ${db_password}
         DB_NAME: db
         REDIS_URL: ${redis_connectionString}
-      start: cd /var/www/back && exec python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8020 --no-access-log
+      start: python3 -m uvicorn app.main:app --app-dir /var/www --host 0.0.0.0 --port 8020 --no-access-log
       healthCheck:
         httpGet:
           port: 8020
@@ -81,7 +162,7 @@ zerops:
       envVariables:
         REDIS_URL: ${redis_connectionString}
         API_URL: http://api:8020
-      start: cd /var/www/ws-bridge && exec python3 -m uvicorn main:app --host 0.0.0.0 --port 8021 --no-access-log
+      start: python3 -m uvicorn main:app --app-dir /var/www/ws-bridge --host 0.0.0.0 --port 8021 --no-access-log
       healthCheck:
         httpGet:
           port: 8021

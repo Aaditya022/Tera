@@ -9,8 +9,8 @@ project:
   vault:
     PRODUCTION: "true"
     ROOT_PATH: /api
-    CORS_ORIGINS: https://tera.zerops.app
-    PUBLIC_APP_BASE_URL: https://tera.zerops.app
+    CORS_ORIGINS: https://web-2cea.prg1.zerops.app
+    PUBLIC_APP_BASE_URL: https://web-2cea.prg1.zerops.app
     SECRET_KEY:
       value: <@generateRandomString(32)>
       sensitive: true
@@ -51,6 +51,8 @@ services:
   - hostname: web
     type: alpine/nginx@latest
     priority: 10
+    minContainers: 1
+    maxContainers: 1
     enableSubdomainAccess: true
     verticalAutoscaling:
       cpuMode: SHARED
@@ -63,6 +65,8 @@ services:
   - hostname: api
     type: alpine/python@3.12
     priority: 9
+    minContainers: 1
+    maxContainers: 1
     verticalAutoscaling:
       cpuMode: SHARED
       minCpu: 1
@@ -74,6 +78,8 @@ services:
   - hostname: ws
     type: alpine/python@3.12
     priority: 8
+    minContainers: 1
+    maxContainers: 1
     verticalAutoscaling:
       cpuMode: SHARED
       minCpu: 1

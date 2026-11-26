@@ -19,9 +19,9 @@ _A point-of-sale system with a customer-facing menu, table management, and reser
 
 **Topics:** `restaurant-pos` · `multi-tenant` · `self-hosted` · `docker` · `fastapi` · `angular` · `postgresql` · `stripe` · `kitchen-display`
 
-**[Try the Tera demo →](https://donor-chart-kinds-warming.trycloudflare.com/)** · **[Demo guide](docs/tera-demo.md)**
+**[Try the Tera demo →](https://web-2cea.prg1.zerops.app/)** · **[Demo guide](docs/tera-demo.md)**
 
-Temporary hackathon hosting: the demo requires the local machine and tunnel to remain running.
+Hosted on Zerops with stable HTTPS, independent of any local machine or tunnel. Staff login: `demo@tera.test` / `TeraDemo2026!`. Courier login: `demo-courier@tera.test` / `TeraCourier2026!`. Expected cost is ~$7.75/mo; the shared Zerops subdomain has a 50MB upload cap and is not production-grade.
 
 ---
 </div>
@@ -168,6 +168,8 @@ preparation and the clean-database bootstrap procedure are documented in the
 
 | Purpose | URL |
 |--------|-----|
+| **Hosted demo (Zerops, stable HTTPS)** | https://web-2cea.prg1.zerops.app/ |
+| **Hosted health check** | https://web-2cea.prg1.zerops.app/api/health |
 | **Unified app (frontend + API via HAProxy)** | http://localhost:4202 |
 | **API docs (Swagger)** | http://localhost:4202/api/docs |
 | **Health check** | http://localhost:4202/api/health |
